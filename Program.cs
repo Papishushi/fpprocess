@@ -37,11 +37,7 @@ foreach (var arg in args)
             tid = parent.Id;
             if (tid == 0) break;
 
-            Console.WriteLine($"{tab}Parent PID: {parent.Id}");
-            Console.WriteLine($"{tab}Name: {p.ProcessName}");
-            Console.WriteLine($"{tab}Working Set (64): {(float)(p.WorkingSet64 * 0.0000001)} mb");
-            Console.WriteLine($"{tab}Module Name: {p.MainModule?.ModuleName}");
-            Console.WriteLine($"{tab}Module Path: {p.MainModule?.FileName}");
+            DisplayProcessInfo(tab, p, parent);
 
             if (parent.HasExited)
             {
@@ -68,22 +64,22 @@ static void WriteLineColor(string content, ConsoleColor color)
     Console.ResetColor();
 }
 
-static string FindIndexedProcessName(int pid)
+static string FindIndexedProcessName(int pId)
 {
     try
     {
-        var processName = Process.GetProcessById(pid).ProcessName;
+        var processName = Process.GetProcessById(pId).ProcessName;
         var processesByName = Process.GetProcessesByName(processName);
-        string processIndexdName = string.Empty;
+        var processIdName = string.Empty;
 
-        for (var index = 0; index < processesByName.Length; index++)
+        for (var i = 0; i < processesByName.Length; i++)
         {
-            processIndexdName = index == 0 ? processName : processName + "#" + index;
-            var processId = new PerformanceCounter("Process", "ID Process", processIndexdName);
-            if ((int)processId.NextValue() == pid) return processIndexdName;
+            processIdName = i == 0 ? processName : $"{processName}#{i}";
+            var processId = new PerformanceCounter("Process", "ID Process", processIdName);
+            if ((int)processId.NextValue() == pId) return processIdName;
         }
 
-        return processIndexdName;
+        return processIdName;
     }
     catch
     {
@@ -105,3 +101,12 @@ static Process? FindPidFromIndexedProcessName(string indexedProcessName)
 }
 
 static Process? GetParent(Process process) => FindPidFromIndexedProcessName(FindIndexedProcessName(process.Id));
+
+static void DisplayProcessInfo(string tab, Process p, Process? parent)
+{
+    Console.WriteLine($"{tab}Parent PID: {parent?.Id}");
+    Console.WriteLine($"{tab}Name: {p.ProcessName}");
+    Console.WriteLine($"{tab}Working Set (64): {(float)(p.WorkingSet64 * 0.0000001)} mb");
+    Console.WriteLine($"{tab}Module Name: {p.MainModule?.ModuleName}");
+    Console.WriteLine($"{tab}Module Path: {p.MainModule?.FileName}");
+}
