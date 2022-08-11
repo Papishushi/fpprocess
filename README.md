@@ -1,4 +1,4 @@
-# fpprocess
+# fpprocess [![.NET](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml)
 Terminal tool targeted for Windows, it's purpose is finding the full list of parent processes based on supplied PIDs by stdin.
 ## Usage
 * Examples:
