@@ -8,9 +8,11 @@ Console.CancelKeyPress += StopRunning;
 
 foreach (var arg in args)
 {
+    var nameMode = false;
     var tab = string.Empty;
     var tid = 0;
     var id = 0;
+    Process p = Process.GetProcessById(0);
 
     try
     {
@@ -18,8 +20,17 @@ foreach (var arg in args)
     }
     catch
     {
-        WriteLineColor($"\nArgument not correctly formatted", ConsoleColor.DarkRed);
-        continue;
+        try
+        {
+            p = Process.GetProcessesByName(arg).First();
+        }
+        catch
+        {
+            WriteLineColor($"\nArgument not correctly formatted '{arg}'", ConsoleColor.DarkRed);
+            continue;
+        }
+
+        nameMode = true;
     }
 
     while (running)
@@ -28,11 +39,12 @@ foreach (var arg in args)
             id = tid;
         try
         {
-            var p = Process.GetProcessById(id);
+            if (tid != 0 || !nameMode)
+                p = Process.GetProcessById(id);
             var parent = GetParent(p);
             if (parent == null) break;
 
-            WriteLineColor($"\n{tab}Get Info from process {id} ({p.ProcessName})", ConsoleColor.Green);
+            WriteLineColor($"\n{tab}Get Info from process {p.Id} ({p.ProcessName})", ConsoleColor.Green);
 
             tid = parent.Id;
             if (tid == 0) break;
