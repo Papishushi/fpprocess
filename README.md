@@ -1,5 +1,5 @@
 # fpprocess v1.1.0 [![CodeQL](https://github.com/Papishushi/fpprocess/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Papishushi/fpprocess/actions/workflows/codeql-analysis.yml) [![.NET](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml)
-Terminal tool targeted for Windows, its purpose is  to find the full list of parent processes based on supplied PIDs by stdin.
+Terminal tool targeted for Windows, its purpose is to find the full list of parent processes based on supplied PIDs or process names by stdin.
 # Usage
 ### Get process info from PID '4'.
       .\fpprocess.exe 4
