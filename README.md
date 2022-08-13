@@ -1,37 +1,50 @@
 # fpprocess [![CodeQL](https://github.com/Papishushi/fpprocess/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Papishushi/fpprocess/actions/workflows/codeql-analysis.yml) [![.NET](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml)
 Terminal tool targeted for Windows, its purpose is  to find the full list of parent processes based on supplied PIDs by stdin.
-## Usage
-* Examples:
-<h1 align="left"><a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?duration=5000&width=500&font=VT323&color=FFFFFF&center=true&lines=>+fpprocess+20560;>+fpprocess+20560+0+4+160+1624"></a></h1>
-
+# Usage
+Get process info from PID '4'.
+      .\fpprocess.exe 4
+Get process info from the first process named 'System'.
+      .\fpprocess.exe System
+Get process info from the first processes named 'eldenring' 'steam'.
+      .\fpprocess.exe eldenring steam
+Get process info from the first process named 'msedgewebview2' then from PID '4' and last from the first process named 'svchost' .
+      .\fpprocess.exe msedgewebview2 4 svchost
+Get process info from the first process named 'fpprocess' then from the first process named 'winlogon' specifying output with no color.
+      .\fpprocess.exe fpprocess winlogon --no-color
+Periodically get process info from PID '1420' every 1500 miliseconds, to stop press *Crtl+C*.
+      .\fpprocess.exe 1420 -i 1500
+Output processes info to a file.
+      .\fpprocess.exe conhost MiniSearchHost dllhost >> hostingProcesses.txt
+Log to a file every 10000 miliseconds, to stop press *Crtl+C*.
+      .\fpprocess.exe -i 10000 1420 >> wininitProcess.txt
 # Installing
-## Release
-* Download last release
-* Unzip *'fpprocess-v1.x.x.7z'*
-* Move **ALL** the contents together to their final destination
-* Use it on your terminal!
 * ***(Extra) You can add it to PATH to use it on any working directory by just typing fpprocess. \
-  -Search "edit ENV" on windows \
-  -Open the result \
-  -Follow this actions: User Variables For $User$>Edit>New \
+  -Search "edit ENV" on windows.                                                                 \
+  -Open the result.                                                                              \
+  -Follow this actions: User Variables For $User$>Edit>New.                                      \
   -To end add the destination path for the installation.***
+## Release
+* Download last release.
+* Unzip *'fpprocess-v1.x.x.7z'*.
+* Move **ALL** the contents together to their final destination.
+* Use it on your terminal!
 ## NuGet Package
 * ### Package Manager
-      Install-Package fpprocess -Version 1.0.1
+      Install-Package fpprocess -Version 1.1.0
 * ### .NET CLI
-      dotnet add package fpprocess --version 1.0.1
+      dotnet add package fpprocess --version 1.1.0
 * ### PackageReference (XML Node)
-      <PackageReference Include="fpprocess" Version="1.0.1" />
+      <PackageReference Include="fpprocess" Version="1.1.0" />
 * ### Paket CLI 
-      paket add fpprocess --version 1.0.1
+      paket add fpprocess --version 1.1.0
 * ### Script & Interactive
-      #r "nuget: fpprocess, 1.0.1"
+      #r "nuget: fpprocess, 1.1.0"
 * ### Cake
       // Install fpprocess as a Cake Addin
-      #addin nuget:?package=fpprocess&version=1.0.1
+      #addin nuget:?package=fpprocess&version=1.1.0
 
       // Install fpprocess as a Cake Tool
-      #tool nuget:?package=fpprocess&version=1.0.1
+      #tool nuget:?package=fpprocess&version=1.1.0
 ## DIY Compilation
 * Clone the repo 
 
