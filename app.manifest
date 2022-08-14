@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
   <assemblyIdentity version="1.1.1.0" name="fpprocess.app"/>
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
     <security>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
-		  
+		 
         <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
 		  
       </requestedPrivileges>
@@ -31,5 +31,4 @@
 
     </application>
   </compatibility>
-
 </assembly>

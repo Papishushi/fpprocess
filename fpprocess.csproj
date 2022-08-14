@@ -43,14 +43,14 @@
     <Version>1.1.1</Version>
     <PackageTags>windows ; cli; terminal; parent; elevated-rights; processmonitoring; dotnet6; processparent</PackageTags>
     <PackageReleaseNotes>
-		Changelog for the v1.1.1:
-		- Fixed #3
-		- Fixed #4
-		- Fixed #5
-		- Created a usefull workflow for adding paramaters to fpprocess.
-		- Some minor changes, typos solved, and renames.
-		- Metadata updated.
-	</PackageReleaseNotes>
+      Changelog for the v1.1.1:
+      - Fixed #3
+      - Fixed #4
+      - Fixed #5
+      - Created a usefull workflow for adding paramaters to fpprocess.
+      - Some minor changes, typos solved, and renames.
+      - Metadata updated.
+    </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

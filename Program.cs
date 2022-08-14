@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 const string NO_COLOR = "--no-color";
 const string INTERVAL = "-i";
