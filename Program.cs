@@ -1,50 +1,38 @@
 ﻿using System.Diagnostics;
 
+const string NO_COLOR = "--no-color";
+const string INTERVAL = "-i";
+const string HELP = "-h";
+
 bool running = true;
 bool isColorOutput = true;
 bool isIntervalMode = false;
-Stopwatch stopWatch = new Stopwatch();
 int interval = 1500;
+int paramIndex = 0;
+var usedParameters = new List<string>();
+var availableParameters = new[] { new Parameter { parameter=HELP    , execution=HelpParameter     },
+                                  new Parameter { parameter=INTERVAL, execution=IntervalParameter },
+                                  new Parameter { parameter=NO_COLOR, execution=NoColorParameter  } };
 
 void StopRunning(object? sender, ConsoleCancelEventArgs args) => running = false;
 
 Console.CancelKeyPress += StopRunning;
 
-if (args.Length > 0 && args.Contains("--no-color"))
-{
-    isColorOutput = false;
-    args = args.Except(new[] { "--no-color" }).ToArray();
-}
+ProcessParameters();
 
-if (args.Length > 0 && args.Contains("-i"))
+if (isIntervalMode)
 {
-    var temp = string.Empty;
-    for (int i = 0; i < args.Length; i++)
-        if (args[i] == "-i")
-        {
-            try
-            {
-                temp = args[i + 1];
-                interval = Convert.ToInt32(temp);
-                break;
-            }
-            catch
-            {
-                return;
-            }
-        }
-    isIntervalMode = true;
-    args = args.Except(new[] { "-i" , temp}).ToArray();
+    Stopwatch stopWatch = new Stopwatch();
+    stopWatch.Start();
+    do
+    {
+        if (stopWatch.ElapsedMilliseconds < interval) continue;
+        stopWatch.Restart();
+        MainAlgorithm();
+    } while (running);
 }
-
-stopWatch.Start();
-do
-{
-    if (stopWatch.ElapsedMilliseconds < interval && isIntervalMode) continue;
-    stopWatch.Restart();
+else
     MainAlgorithm();
-} while (isIntervalMode);
-stopWatch.Stop();
 
 void MainAlgorithm()
 {
@@ -125,6 +113,62 @@ void MainAlgorithm()
         }
     }
 }
+void ProcessParameters()
+{
+    if (args.Length <= 0) return;
+    for (int i = 0; i < args.Length; i++)
+    {
+        if(args[i][0] != '-') continue;
+        foreach (var param in availableParameters)
+        {
+            if (param.parameter != args[i]) continue;
+            paramIndex = i;
+            param.execution();
+            paramIndex = 0; 
+            break;
+        }
+    }
+    args = args.Except(usedParameters).ToArray();
+    usedParameters.Clear();
+}
+
+#region PARAMETERS
+    void NoColorParameter()
+    {
+        isColorOutput = false;
+        usedParameters.Add(NO_COLOR);
+    }
+
+    void IntervalParameter()
+    {
+        isIntervalMode = true;
+        try
+        {
+            var temp = args[paramIndex + 1];
+            interval = Convert.ToInt32(temp);
+            usedParameters.AddRange(new[] { args[paramIndex], temp });
+        }
+        catch
+        {
+            usedParameters.Add(args[paramIndex]);
+        }
+    }
+
+    void HelpParameter()
+    {
+        running = false;
+        try
+        {
+            var temp = args[paramIndex + 1];
+            //Do something with temp.
+            usedParameters.AddRange(new[] { args[paramIndex], temp });
+        }
+        catch
+        {
+            usedParameters.Add(args[paramIndex]);
+        }
+    }
+#endregion PARAMETERS
 
 static void WriteLineColor(string content, ConsoleColor color, params ConsoleColor[] background)
 {
@@ -145,7 +189,7 @@ static string FindIndexedProcessName(int pId)
         for (var i = 0; i < processesByName.Length; i++)
         {
             processIdName = i == 0 ? processName : $"{processName}#{i}";
-            var processId = new PerformanceCounter("Process", "ID Process", processIdName);
+            using var processId = new PerformanceCounter("Process", "ID Process", processIdName);
             if ((int)processId.NextValue() == pId) return processIdName;
         }
 
@@ -156,20 +200,19 @@ static string FindIndexedProcessName(int pId)
         return string.Empty;
     }
 }
-
-static Process? FindPidFromIndexedProcessName(string indexedProcessName)
+static Process? FindCreatingProcessID(string indexedProcessName)
 {
     try
     {
-        return Process.GetProcessById((int)new PerformanceCounter("Process", "Creating Process ID", indexedProcessName).NextValue());
+        using var processParent = new PerformanceCounter("Process", "Creating Process ID", indexedProcessName);
+        return Process.GetProcessById((int)processParent.NextValue());
     }
     catch
     {
         return null;
     }
 }
-
-static Process? GetParent(Process process) => FindPidFromIndexedProcessName(FindIndexedProcessName(process.Id));
+static Process? GetParent(Process process) => FindCreatingProcessID(FindIndexedProcessName(process.Id));
 
 static void DisplayProcessInfo(string tab, Process p, Process? parent)
 {
@@ -179,12 +222,17 @@ static void DisplayProcessInfo(string tab, Process p, Process? parent)
     Console.Write($"{tab}Module Name        |  "); WriteLineColor($"{p.MainModule?.ModuleName}", ConsoleColor.DarkMagenta);
     Console.Write($"{tab}Module Path        |  "); WriteLineColor($"{p.MainModule?.FileName.Replace(p.MainModule?.ModuleName ?? string.Empty, string.Empty)}", ConsoleColor.DarkMagenta);
 }
-
 static void DisplayProcessInfoWhite(string tab, Process p, Process? parent)
 {
-    Console.WriteLine($"{tab}Parent PID         |  {parent?.Id}");
-    Console.WriteLine($"{tab}Name               |  {p.ProcessName}");
-    Console.WriteLine($"{tab}Working Set (x64)  |  {(float)(p.WorkingSet64 * 0.0000001)} mb");
-    Console.WriteLine($"{tab}Module Name        |  {p.MainModule?.ModuleName}");
-    Console.WriteLine($"{tab}Module Path        |  {p.MainModule?.FileName.Replace(p.MainModule?.ModuleName ?? string.Empty, string.Empty)}"); 
+    Console.Write($"{tab}Parent PID         |  "); Console.WriteLine($"{parent?.Id}");
+    Console.Write($"{tab}Name               |  "); Console.WriteLine($"{p.ProcessName}");
+    Console.Write($"{tab}Working Set (x64)  |  "); Console.WriteLine($"{(float)(p.WorkingSet64 * 0.0000001)} mb");
+    Console.Write($"{tab}Module Name        |  "); Console.WriteLine($"{p.MainModule?.ModuleName}");
+    Console.Write($"{tab}Module Path        |  "); Console.WriteLine($"{p.MainModule?.FileName.Replace(p.MainModule?.ModuleName ?? string.Empty, string.Empty)}"); 
+}
+
+struct Parameter
+{
+    public string parameter;
+    public Action execution;
 }

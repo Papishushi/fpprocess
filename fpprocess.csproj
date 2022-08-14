@@ -40,9 +40,17 @@
 
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <PackageTags>windows ; cli; terminal; parent; elevated-rights; processmonitoring; dotnet6; processparent</PackageTags>
-    <PackageReleaseNotes>* Better looking colors! * A lot of bug fixing, yeah! * Added support for process names, instead of PIDs. (You can mix inputs) * Added support for parameters. * Added new functionality for changing background color to WriteLineColor method. * Color output mode switch with --no-color parameter * Now you can run the script at an interval with -i parameter</PackageReleaseNotes>
+    <PackageReleaseNotes>
+		Changelog for the v1.1.1:
+		- Fixed #3
+		- Fixed #4
+		- Fixed #5
+		- Created a usefull workflow for adding paramaters to fpprocess.
+		- Some minor changes, typos solved, and renames.
+		- Metadata updated.
+	</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

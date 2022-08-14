@@ -1,4 +1,4 @@
-# fpprocess v1.1.0 [![CodeQL](https://github.com/Papishushi/fpprocess/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Papishushi/fpprocess/actions/workflows/codeql-analysis.yml) [![.NET](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml)
+# fpprocess v1.1.1 [![CodeQL](https://github.com/Papishushi/fpprocess/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Papishushi/fpprocess/actions/workflows/codeql-analysis.yml) [![.NET](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Papishushi/fpprocess/actions/workflows/dotnet.yml)
 Terminal tool targeted for Windows, its purpose is to find the full list of parent processes based on supplied PIDs or process names by stdin.
 # Usage
 * ### Get process info from PID '4'.
@@ -30,21 +30,21 @@ Terminal tool targeted for Windows, its purpose is to find the full list of pare
 * Use it on your terminal!
 ## NuGet Package
 * ### Package Manager
-      Install-Package fpprocess -Version 1.1.0
+      Install-Package fpprocess -Version 1.1.1
 * ### .NET CLI
-      dotnet add package fpprocess --version 1.1.0
+      dotnet add package fpprocess --version 1.1.1
 * ### PackageReference (XML Node)
-      <PackageReference Include="fpprocess" Version="1.1.0" />
+      <PackageReference Include="fpprocess" Version="1.1.1" />
 * ### Paket CLI 
-      paket add fpprocess --version 1.1.0
+      paket add fpprocess --version 1.1.1
 * ### Script & Interactive
-      #r "nuget: fpprocess, 1.1.0"
+      #r "nuget: fpprocess, 1.1.1"
 * ### Cake
       // Install fpprocess as a Cake Addin
-      #addin nuget:?package=fpprocess&version=1.1.0
+      #addin nuget:?package=fpprocess&version=1.1.1
 
       // Install fpprocess as a Cake Tool
-      #tool nuget:?package=fpprocess&version=1.1.0
+      #tool nuget:?package=fpprocess&version=1.1.1
 * ### Github Package   
       pip install git+git://github.com/Papishushi/fpprocess.git
 ## DIY Compilation
